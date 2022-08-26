@@ -1,4 +1,4 @@
-import React, { PureComponent, Component } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -10,7 +10,36 @@ import LoadMoreBtn from './Button/Button'
 
 import { AppContainer } from './App.styled'
 
+const Appp = () => {
+  const [page, setPage] = useState(1)
+
+  const handleLoadMore = () => {
+    setPage(prevState => prevState + 1)
+  }
+
+  // state - це просто ім'я змінної
+  // const handleLoadMore = () => {
+  //   setPage(state => state + 1)
+  // }
+
+  useEffect(() => {
+    document.title = `Сторінку змінено ${page} разів`
+  }, [page])
+
+  return (
+    <AppContainer>
+
+        <LoadMoreBtn
+          handleLoadMore={handleLoadMore}
+        />
+
+      <ToastContainer autoClose={5000} />
+    </AppContainer>
+  )
+}
+
 export default class App extends Component {
+
   state = {
     images: [],
     page: 1,
@@ -72,6 +101,7 @@ export default class App extends Component {
 
     return (
       <AppContainer>
+        <Appp />
         <Searchbar
           onSearchbarSubmit={this.handleSearchbarSubmit}
           onResetGallery={this.handleResetGallery}
