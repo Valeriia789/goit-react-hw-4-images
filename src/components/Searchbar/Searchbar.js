@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { toast } from 'react-toastify'
 
@@ -10,54 +10,49 @@ import {
   SearchFormInput
 } from './Searchbar.styled'
 
-class Searchbar extends Component {
-  static propTypes = {
-    onResetGallery: PropTypes.func.isRequired,
-    onSearchbarSubmit: PropTypes.func.isRequired
-  }
-  
-  state = {
-    searchQuery: ''
+const Searchbar = ({ onSearchbarSubmit }) => {
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const handleQueryChange = e => {
+    setSearchQuery(e.currentTarget.value.toLowerCase())
   }
 
-  handleQueryChange = e => {
-    this.setState({ searchQuery: e.currentTarget.value.toLowerCase() })
-  }
-
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault()
-    if (this.state.searchQuery.trim() === '') {
+    if (searchQuery.trim() === '') {
       toast.info('Введіть пошуковий запит')
       return
     }
 
-    this.props.onSearchbarSubmit(this.state.searchQuery)
-    this.setState({ searchQuery: '' })
+    onSearchbarSubmit(searchQuery)
+    setSearchQuery('')
   }
 
-  render () {
-    return (
-      <SearchbarContainer>
-        <header>
-          <SearchForm onSubmit={this.handleSubmit}>
-            <SearchFormButton onClick={this.props.onResetGallery} type='submit'>
-              <SearchFormButtonLabel>Search</SearchFormButtonLabel>
-            </SearchFormButton>
+  return (
+    <SearchbarContainer>
+      <header>
+        <SearchForm onSubmit={handleSubmit}>
+          <SearchFormButton type='submit'>
+            <SearchFormButtonLabel>Search</SearchFormButtonLabel>
+          </SearchFormButton>
 
-            <SearchFormInput
-              name='searchQuery'
-              value={this.state.searchQuery}
-              onChange={this.handleQueryChange}
-              type='text'
-              autoComplete='off'
-              autoFocus
-              placeholder='Search images and photos'
-            />
-          </SearchForm>
-        </header>
-      </SearchbarContainer>
-    )
-  }
+          <SearchFormInput
+            name='searchQuery'
+            value={searchQuery}
+            onChange={handleQueryChange}
+            type='text'
+            autoComplete='off'
+            autoFocus
+            placeholder='Search images and photos'
+          />
+        </SearchForm>
+      </header>
+    </SearchbarContainer>
+  )
+}
+
+Searchbar.propTypes = {
+  onSearchbarSubmit: PropTypes.func.isRequired
 }
 
 export default Searchbar
