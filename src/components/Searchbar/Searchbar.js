@@ -10,7 +10,7 @@ import {
   SearchFormInput
 } from './Searchbar.styled'
 
-const Searchbar = ({ onSearchbarSubmit }) => {
+const Searchbar = ({ onSubmit }) => {
   const [searchQuery, setSearchQuery] = useState('')
 
   const handleQueryChange = e => {
@@ -19,12 +19,12 @@ const Searchbar = ({ onSearchbarSubmit }) => {
 
   const handleSubmit = e => {
     e.preventDefault()
-    if (searchQuery.trim() === '') {
-      toast.info('Введіть пошуковий запит')
-      return
-    }
+    // if (searchQuery.trim() === '') {
+    //   toast.info('Введіть пошуковий запит')
+    //   return
+    // }
 
-    onSearchbarSubmit(searchQuery)
+    onSubmit(searchQuery)
     setSearchQuery('')
   }
 
@@ -52,7 +52,7 @@ const Searchbar = ({ onSearchbarSubmit }) => {
 }
 
 Searchbar.propTypes = {
-  onSearchbarSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired
 }
 
 export default Searchbar
