@@ -19,10 +19,10 @@ const Searchbar = ({ onSubmit }) => {
 
   const handleSubmit = e => {
     e.preventDefault()
-    // if (searchQuery.trim() === '') {
-    //   toast.info('Введіть пошуковий запит')
-    //   return
-    // }
+    if (searchQuery.trim() === '') {
+      toast.info('Введіть пошуковий запит')
+      return
+    }
 
     onSubmit(searchQuery)
     setSearchQuery('')
