@@ -20,16 +20,12 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const onChangeSearchQuery = searchQuery => {
-    setSearchQuery({ searchQuery })
+    setSearchQuery( searchQuery )
     setPage(1)
     setImages([])
     setError(null)
   }
-
-  // const handleSearchbarSubmit = searchQuery => {
-  //   this.setState({ searchQuery })
-  // }
-
+  
   const handleLoadMore = () => {
     setPage(prevState => prevState + 1)
   }
@@ -38,28 +34,40 @@ const App = () => {
     if (!searchQuery) {
       return
     }
+
+    setIsLoading(true)
+
     fetchImages({ query: searchQuery })
       .then(responseImages => {
         console.log({ responseImages })
-        setImages([...responseImages])
+        if(searchQuery) {
+          setImages([...responseImages])
+        }
+        if (page) {
+          setImages(prevImages => [...prevImages, ...responseImages])
+        }
+        // setImages([...responseImages])
       })
       .catch(error => {
         setError(error.message)
       })
       .finally(() => setIsLoading(false))
-  }, [searchQuery])
+  }, [page, searchQuery])
 
-  useEffect(() => {
-    fetchImages({ page })
-      .then(responseImages => {
-        console.log({ responseImages })
-        setImages(prevImages => [...prevImages, ...responseImages])
-      })
-      .catch(error => {
-        setError(error.message)
-      })
-      .finally(() => setIsLoading(false))
-  }, [page])
+  // useEffect(() => {
+  //   setIsLoading(true)
+    
+  //   fetchImages({ page })
+  //     .then(responseImages => {
+  //       console.log({ responseImages })
+  //       setImages(prevImages => [...prevImages, ...responseImages])
+  //     })
+  //     .catch(error => {
+  //       setError(error.message)
+  //     })
+  //     .finally(() => setIsLoading(false))
+  // }, [page])
+
 
   return (
     <AppContainer>
