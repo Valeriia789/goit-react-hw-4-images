@@ -27,7 +27,7 @@ const ImageGallery = ({ images, isLoading, error }) => {
       {isLoading && <Loader />}
       {images &&
         images.map(image => <ImageGalleryItem key={image.id} {...image} />)}
-        {error && <ImageErrorView message={error.message} />}
+        {error && <ImageErrorView message={'Something went wrong, reload the page and try another request'} />}
     </ImageGalleryList>
   )
 }

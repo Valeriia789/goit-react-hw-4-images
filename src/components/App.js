@@ -16,18 +16,18 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [page, setPage] = useState(1)
   const [images, setImages] = useState([])
-  const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const onChangeSearchQuery = searchQuery => {
-    setSearchQuery( searchQuery )
+    setSearchQuery(searchQuery)
     setPage(1)
     setImages([])
     setError(null)
   }
-  
+
   const handleLoadMore = () => {
-    setPage(prevState => prevState + 1)
+    setPage(prevPage => prevPage + 1)
   }
 
   useEffect(() => {
@@ -37,26 +37,25 @@ const App = () => {
 
     setIsLoading(true)
 
-    fetchImages({ query: searchQuery })
+    fetchImages({ query: searchQuery, page })
       .then(responseImages => {
-        console.log({ responseImages })
-        if(searchQuery) {
+        if (page > 1) {
+          console.log('new page')
+          setImages(prevImages => [...prevImages, ...responseImages])
+        } else {
+          console.log('new searchQuery')
           setImages([...responseImages])
         }
-        if (page) {
-          setImages(prevImages => [...prevImages, ...responseImages])
-        }
-        // setImages([...responseImages])
       })
       .catch(error => {
-        setError(error.message)
+        setError(error)
       })
       .finally(() => setIsLoading(false))
   }, [page, searchQuery])
 
   // useEffect(() => {
   //   setIsLoading(true)
-    
+
   //   fetchImages({ page })
   //     .then(responseImages => {
   //       console.log({ responseImages })
@@ -67,7 +66,6 @@ const App = () => {
   //     })
   //     .finally(() => setIsLoading(false))
   // }, [page])
-
 
   return (
     <AppContainer>
