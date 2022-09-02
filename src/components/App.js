@@ -38,11 +38,9 @@ const App = () => {
     fetchImages({ query: searchQuery, page })
       .then(responseImages => {
         if (page > 1) {
-          console.log('new page')
           setImages(prevImages => [...prevImages, ...responseImages])
           setError(false)
         } else {
-          console.log('new searchQuery')
           setImages([...responseImages])
           setError(false)
         }
