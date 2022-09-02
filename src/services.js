@@ -1,4 +1,3 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 
@@ -12,11 +11,6 @@ const fetchImages = ({ query, page } = {}) => {
     )
     .then(response => response.data.hits)
 }
-// const fetchImages = ({ searchQuery, page }) => {
-//   return axios.get(
-//     `${BASE_URL}?key=${API_KEY}&q=${searchQuery}&image_type=photo&page=${page}&per_page=12`
-//   )
-// }
 
 fetchImages.propTypes = {
   searchQuery: PropTypes.string.isRequired,

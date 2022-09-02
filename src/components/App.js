@@ -1,29 +1,27 @@
-import React, { Component, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import fetchImages from '../services'
 
 import Searchbar from './Searchbar/Searchbar'
-import Loader from './Loader/Loader'
 import ImageGallery from './ImageGallery/ImageGallery'
-import ImageErrorView from './ImageErrorView/ImageErrorView'
 import LoadMoreBtn from './Button/Button'
 
 import { AppContainer } from './App.styled'
 
 const App = () => {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [page, setPage] = useState(1)
   const [images, setImages] = useState([])
+  const [page, setPage] = useState(1)
+  const [searchQuery, setSearchQuery] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(false)
 
   const onChangeSearchQuery = searchQuery => {
     setSearchQuery(searchQuery)
     setPage(1)
     setImages([])
-    setError(null)
+    setError(false)
   }
 
   const handleLoadMore = () => {
@@ -42,30 +40,18 @@ const App = () => {
         if (page > 1) {
           console.log('new page')
           setImages(prevImages => [...prevImages, ...responseImages])
+          setError(false)
         } else {
           console.log('new searchQuery')
           setImages([...responseImages])
+          setError(false)
         }
       })
       .catch(error => {
-        setError(error)
+        setError(true)
       })
       .finally(() => setIsLoading(false))
   }, [page, searchQuery])
-
-  // useEffect(() => {
-  //   setIsLoading(true)
-
-  //   fetchImages({ page })
-  //     .then(responseImages => {
-  //       console.log({ responseImages })
-  //       setImages(prevImages => [...prevImages, ...responseImages])
-  //     })
-  //     .catch(error => {
-  //       setError(error.message)
-  //     })
-  //     .finally(() => setIsLoading(false))
-  // }, [page])
 
   return (
     <AppContainer>
@@ -85,7 +71,3 @@ const App = () => {
 }
 
 export default App
-
-// useEffect(() => {
-//   document.title = `Сторінку змінено ${page} разів`
-// }, [page])
